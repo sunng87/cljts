@@ -11,10 +11,13 @@
 (def the-point (.createPoint geom-factory
                              (Coordinate. 20 30)))
 
-(unfinished point)
+(fact
+ (c 50 23) => (Coordinate. 50 23)
+ (c 118 43 50.3) => (Coordinate. 118 43 50.3))
+
+;(unfinished point)
 
 (fact
- (point ...x-y...) => the-point
- (provided
-  (point ...x-y...) => the-point))
+ (point (c 20 30)) => the-point)
+
 
