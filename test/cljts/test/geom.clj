@@ -20,4 +20,11 @@
 (fact
  (point (c 20 30)) => the-point)
 
+;(unfinished linestring)
+
+(fact
+ (linestring [(c 20 30) (c 30 40) (c 40 50)]) =>
+ (.createLineString geom-factory
+                    (into-array Coordinate [(c 20 30) (c 30 40) (c 40 50)])))
+
 
