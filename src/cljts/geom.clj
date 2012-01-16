@@ -41,3 +41,7 @@
   (fn [factory coordinates]
     (.createLineString factory (into-array Coordinate coordinates))))
 
+(defgeom linearring
+  (fn [factory coordinates]
+    (.createLinearRing factory (into-array Coordinate coordinates))))
+
