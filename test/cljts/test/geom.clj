@@ -25,11 +25,11 @@
 (def cseq [(c 20 30) (c 30 40) (c 40 50)])
 
 (fact
- (linestring cseq) =>
+ (line-string cseq) =>
  (.createLineString geom-factory (into-array Coordinate cseq)))
 
 (def cseq-ring [(c 20 30) (c 30 40) (c 40 50) (c 20 30)])
 (fact
- (linearring cseq-ring) =>
+ (linear-ring cseq-ring) =>
  (.createLinearRing geom-factory (into-array Coordinate cseq-ring)))
 
