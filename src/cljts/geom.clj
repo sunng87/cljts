@@ -9,11 +9,6 @@
   ([x y] (Coordinate. x y))
   ([x y z] (Coordinate. x y z)))
 
-(defn c-seq
-  "create a coordinate sequence"
-  [& cs]
-  )
-
 (def ^{:private true} precisions
   {:floating PrecisionModel/FLOATING
    :floating-single PrecisionModel/FLOATING_SINGLE
@@ -30,15 +25,19 @@
                                srid)))
     (@geom-factory-cache key)))
 
-(defmacro defgeom [geom-type args factory-method]
-  `(defn ~geom-type [~@args
+(defmacro defgeom [geom-type bodyfn]
+  `(defn ~geom-type [args#
                      & {:keys [precision-model# srid#]
                         :or {precision-model# :floating
                              srid# 0}}]
      (let [geom-factory# (cached-geom-factory precision-model# srid#)]
-       (. geom-factory# ~factory-method ~@args))))
+       (~bodyfn geom-factory# args#))))
 
-(defgeom point [coordinate] createPoint)
+(defgeom point
+  (fn [factory coordinate]
+    (.createPoint factory coordinate)))
 
-(defgeom linestring [coordinate-sequence] createLineString)
+(defgeom linestring
+  (fn [factory coordinates]
+    (.createLineString factory (into-array Coordinate coordinates))))
 
