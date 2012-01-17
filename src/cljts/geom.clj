@@ -2,7 +2,8 @@
   (:import [com.vividsolutions.jts.geom
             GeometryFactory
             PrecisionModel
-            Coordinate]))
+            Coordinate
+            LinearRing]))
 
 (defn c
   "create a coordinate object."
@@ -25,23 +26,26 @@
                                srid)))
     (@geom-factory-cache key)))
 
-(defmacro defgeom [geom-type bodyfn]
-  `(defn ~geom-type [args#
-                     & {:keys [precision-model# srid#]
+(defmacro defgeom [geom-type args bodyfn]
+  `(defn ~geom-type [~@args & {:keys [precision-model# srid#]
                         :or {precision-model# :floating
                              srid# 0}}]
      (let [geom-factory# (cached-geom-factory precision-model# srid#)]
-       (~bodyfn geom-factory# args#))))
+       (~bodyfn geom-factory# ~@args))))
 
-(defgeom point
+(defgeom point [c]
   (fn [factory coordinate]
     (.createPoint factory coordinate)))
 
-(defgeom line-string
+(defgeom line-string [cs]
   (fn [factory coordinates]
     (.createLineString factory (into-array Coordinate coordinates))))
 
-(defgeom linear-ring
+(defgeom linear-ring [cs]
   (fn [factory coordinates]
     (.createLinearRing factory (into-array Coordinate coordinates))))
+
+(defgeom polygon [ring rings]
+  (fn [factory ring rings]
+    (.createPolygon factory ring (into-array LinearRing rings))))
 
