@@ -6,7 +6,9 @@
             Coordinate
             GeometryFactory
             PrecisionModel
-            LinearRing]))
+            LinearRing
+            Polygon
+            Point]))
 
 (def geom-factory (GeometryFactory.))
 (def the-point (.createPoint geom-factory
@@ -42,5 +44,19 @@
    (polygon outter-ring [inner-ring]) =>
    (.createPolygon geom-factory outter-ring
                    (into-array LinearRing [inner-ring]))))
+
+;; multi-point
+(fact
+ (let [p1 (point (c 20 30))
+       p2 (point (c 30 40))]
+   (multi-point [p1 p2]) =>
+   (.createMultiPoint geom-factory (into-array Point [p1 p2]))))
+
+;; multi-polygon
+(fact
+ (let [pp1 (polygon (linear-ring cseq-ring) nil)
+       pp2 (polygon (linear-ring cseq-ring-inner) nil)]
+   (multi-polygon [pp1 pp2]) =>
+   (.createMultiPolygon geom-factory (into-array Polygon [pp1 pp2]))))
 
 

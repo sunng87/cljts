@@ -3,7 +3,9 @@
             GeometryFactory
             PrecisionModel
             Coordinate
-            LinearRing]))
+            LinearRing
+            Point
+            Polygon]))
 
 (defn c
   "create a coordinate object."
@@ -48,4 +50,13 @@
 (defgeom polygon [ring rings]
   (fn [factory ring rings]
     (.createPolygon factory ring (into-array LinearRing rings))))
+
+(defgeom multi-point [ps]
+  (fn [factory points]
+    (.createMultiPoint factory (into-array Point points))))
+
+(defgeom multi-polygon [ps]
+  (fn [factory polygons]
+    (.createMultiPolygon factory (into-array Polygon polygons))))
+
 
