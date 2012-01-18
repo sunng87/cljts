@@ -1,11 +1,13 @@
 (ns cljts.geom
+  (:refer-clojure :exclude [empty?])
   (:import [com.vividsolutions.jts.geom
             GeometryFactory
             PrecisionModel
             Coordinate
             LinearRing
             Point
-            Polygon]))
+            Polygon
+            Geometry]))
 
 (defn c
   "create a coordinate object."
@@ -71,4 +73,48 @@
   (fn [factory polygons]
     (.createMultiPolygon factory (into-array Polygon polygons))))
 
+(defprotocol GeometryProperties
+  (area [this] "return the area of geometry object, 0 for D0 and D1 objects")
+  (boundary [this] "return the boundary of geometry object, which is also a geometry object")
+  (centroid [this] "return the centroid point")
+  (coordinates [this] "return a vector contains all coordinates of the object")
+  (dimension [this] "return the dimension value of the object")
+  (envelope [this] "return the boundary box(bbox) of the object")
+  (interior-point [this] "return the interior point")
+  (length [this] "return the length of the object, 0 for D0 objects")
+  (srid [this] "return the srid")
+  (n-geometries [this] "return the number of geometries in the object")
+  (n-points [this] "return the number of points in the objects")
+  (empty? [this] "test if the geometry is an empty one")
+  (simple? [this]
+    "test if the geometry is a simple one. You can find the definition to simple at: http://tsusiatsoftware.net/jts/javadoc/com/vividsolutions/jts/geom/Geometry.html#isSimple()"))
+
+(extend-type Geometry
+  GeometryProperties
+  (area [this]
+    (.getArea this))
+  (boundary [this]
+    (.getBoundary this))
+  (centroid [this]
+    (.getCentroid this))
+  (coordinates [this]
+    (into [] (.getCoordinates this)))
+  (dimension [this]
+    (.getDimension this))
+  (envelope [this]
+    (.getEnvelope this))
+  (interior-point [this]
+    (.getInteriorPoint this))
+  (length [this]
+    (.getLength this))
+  (srid [this]
+    (.getSRID this))
+  (n-geometries [this]
+    (.getNumGeometries this))
+  (n-points [this]
+    (.getNumPoints this))
+  (empty? [this]
+    (.isEmpty this))
+  (simple? [this]
+    (.isSimple this)))
 

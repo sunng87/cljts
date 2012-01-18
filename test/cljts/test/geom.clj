@@ -1,4 +1,5 @@
 (ns cljts.test.geom
+  (:refer-clojure :exclude [empty?])
   (:use [clojure.test])
   (:use [cljts.geom])
   (:use [midje.sweet])
@@ -37,7 +38,7 @@
  (linear-ring cseq-ring) =>
  (.createLinearRing geom-factory (into-array Coordinate cseq-ring)))
 
-(fact
+(facts
  (let [outter-ring (linear-ring cseq-ring)
        inner-ring (linear-ring cseq-ring-inner)]
    (polygon outter-ring nil) => (.createPolygon geom-factory outter-ring nil)
@@ -59,4 +60,30 @@
    (multi-polygon [pp1 pp2]) =>
    (.createMultiPolygon geom-factory (into-array Polygon [pp1 pp2]))))
 
+
+
+;; geometry properties
+(facts
+ (let [pp (polygon (linear-ring cseq-ring) nil)]
+   (area pp) => (.getArea pp)
+   (area (point (c 30 10))) => 0.0
+
+   (boundary pp) => (.getBoundary pp)
+   (centroid pp) => (.getCentroid pp)
+   (coordinates pp) => cseq-ring
+   (dimension pp) => 2
+   (envelope pp) => (.getEnvelope pp)
+   (interior-point pp) => (.getInteriorPoint pp)
+   
+   (length pp) => (.getLength pp)
+   (length (point (c 30 20))) => 0.0
+
+   ;; default srid
+   (srid pp) => 0
+
+   (n-geometries pp) => 1
+   (n-points pp) => (count cseq-ring)
+
+   (empty? pp) => false
+   (simple? pp) => true))
 
