@@ -3,4 +3,5 @@
   :dependencies [[org.clojure/clojure "1.3.0"]
                  [com.vividsolutions/jts "1.12"]]
   :dev-dependencies [[lein-midje "1.0.7"]
+                     [codox "0.3.4"]
                      [midje "1.3.1"]])

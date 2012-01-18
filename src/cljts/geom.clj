@@ -28,34 +28,46 @@
                                srid)))
     (@geom-factory-cache key)))
 
-(defmacro defgeom [geom-type args bodyfn]
-  `(defn ~geom-type [~@args & {:keys [precision-model# srid#]
+(defmacro defgeom [geom-type doc args bodyfn]
+  `(defn ~geom-type ~doc [~@args & {:keys [precision-model# srid#]
                         :or {precision-model# :floating
                              srid# 0}}]
      (let [geom-factory# (cached-geom-factory precision-model# srid#)]
        (~bodyfn geom-factory# ~@args))))
 
-(defgeom point [c]
+(defgeom point
+  "create a jts point object"
+  [coordinate]
   (fn [factory coordinate]
     (.createPoint factory coordinate)))
 
-(defgeom line-string [cs]
+(defgeom line-string
+  "create a jts linestring"
+  [coordinates]
   (fn [factory coordinates]
     (.createLineString factory (into-array Coordinate coordinates))))
 
-(defgeom linear-ring [cs]
+(defgeom linear-ring
+  "create a jts linear ring, which is useful to create polygons"
+  [cs]
   (fn [factory coordinates]
     (.createLinearRing factory (into-array Coordinate coordinates))))
 
-(defgeom polygon [ring rings]
+(defgeom polygon
+  "create a jts polygon"
+  [ring rings]
   (fn [factory ring rings]
     (.createPolygon factory ring (into-array LinearRing rings))))
 
-(defgeom multi-point [ps]
+(defgeom multi-point
+  "create a multi-point with some points"
+  [ps]
   (fn [factory points]
     (.createMultiPoint factory (into-array Point points))))
 
-(defgeom multi-polygon [ps]
+(defgeom multi-polygon
+  "create a multi-polygon with some polygons"
+  [ps]
   (fn [factory polygons]
     (.createMultiPolygon factory (into-array Polygon polygons))))
 
