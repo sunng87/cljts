@@ -3,6 +3,7 @@
   (:import [com.vividsolutions.jts.geom
             GeometryFactory
             PrecisionModel
+            PrecisionModel$Type
             Coordinate
             LinearRing
             Point
@@ -26,7 +27,7 @@
   (let [key (str pm srid)]
     (when-not (contains? @geom-factory-cache key)
       (swap! geom-factory-cache assoc key
-             (GeometryFactory. (PrecisionModel. (precisions pm))
+             (GeometryFactory. (PrecisionModel. ^PrecisionModel$Type (precisions pm))
                                srid)))
     (@geom-factory-cache key)))
 
@@ -41,37 +42,47 @@
   "create a jts point object"
   [coordinate]
   (fn [factory coordinate]
-    (.createPoint factory coordinate)))
+    (.createPoint ^GeometryFactory factory
+                  ^Coordinate coordinate)))
 
 (defgeom line-string
   "create a jts linestring"
   [coordinates]
   (fn [factory coordinates]
-    (.createLineString factory (into-array Coordinate coordinates))))
+    (.createLineString ^GeometryFactory factory
+                       #^"[Lcom.vividsolutions.jts.geom.Coordinate;"
+                       (into-array Coordinate coordinates))))
 
 (defgeom linear-ring
   "create a jts linear ring, which is useful to create polygons"
   [cs]
   (fn [factory coordinates]
-    (.createLinearRing factory (into-array Coordinate coordinates))))
+    (.createLinearRing ^GeometryFactory factory
+                       #^"[Lcom.vividsolutions.jts.geom.Coordinate;"
+                       (into-array Coordinate coordinates))))
 
 (defgeom polygon
   "create a jts polygon"
   [ring rings]
   (fn [factory ring rings]
-    (.createPolygon factory ring (into-array LinearRing rings))))
+    (.createPolygon ^GeometryFactory factory
+                    ^LinearRing ring
+                   (into-array LinearRing rings))))
 
 (defgeom multi-point
   "create a multi-point with some points"
   [ps]
   (fn [factory points]
-    (.createMultiPoint factory (into-array Point points))))
+    (.createMultiPoint ^GeometryFactory factory
+                       #^"[Lcom.vividsolutions.jts.geom.Point;"
+                       (into-array Point points))))
 
 (defgeom multi-polygon
   "create a multi-polygon with some polygons"
   [ps]
   (fn [factory polygons]
-    (.createMultiPolygon factory (into-array Polygon polygons))))
+    (.createMultiPolygon ^GeometryFactory factory
+                         (into-array Polygon polygons))))
 
 (defprotocol GeometryProperties
   (area [this] "return the area of geometry object, 0 for D0 and D1 objects")
