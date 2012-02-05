@@ -23,7 +23,7 @@
 (def ^{:private true} geom-factory-cache
   (atom {(str 0 :floating) (GeometryFactory.)}))
 
-(defn- cached-geom-factory [pm srid]
+(defn cached-geom-factory [pm srid]
   (let [key (str pm srid)]
     (when-not (contains? @geom-factory-cache key)
       (swap! geom-factory-cache assoc key
