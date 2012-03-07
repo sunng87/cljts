@@ -75,7 +75,7 @@ Serialize geometry objects to Well-Known Text and Well-Known Binary format:
 (use 'cljts.io)
 (write-wkt g)
 (write-wkb-bytes data)
-(read-wkt some-reader
+(read-wkt some-reader)
 ```
 
 ## License
