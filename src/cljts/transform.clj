@@ -13,9 +13,8 @@
   ([c1 c2]
       (AffineTransformationFactory/createFromControlVectors c1 c2)))
 
-(defn- create-transformation [xys]
-  (let [coords (map #(apply c %) (partition 2 xys))]
-    (apply create-from-control-vectors coords)))
+(defn- create-transformation [coordinates]
+  (apply create-from-control-vectors coordinates))
 
 (defprotocol Transformable
   (transform [this transformation]))
@@ -34,11 +33,16 @@
   (fn [this]
       (transform this tr)))
 
-(defn transformation [coordinates]
+(defn transformation
+  "Creates a transformation function from 2, 4 or 6 coordinates which specify coordinates before and after transformation"
+  [coordinates]
   (transformation-fn (create-transformation coordinates)))
 
 (defn inverse-transformation [coordinates]
+  "Creates a transformation function which provides inverse transformation. Please note that not all transformations are inversible, it will throw an exception if no inverse exists"
   (transformation-fn (.getInverse (create-transformation coordinates))))
 
-(defn identity-transformation []
-  (transformation-fn (.setToIdentity (AffineTransformation.))))
+(defn identity-transformation [this]
+  "Identity transformation"
+  (let [identity-tr (.setToIdentity (AffineTransformation.))]
+    ((transformation-fn identity-tr) this)))
