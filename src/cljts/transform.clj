@@ -2,15 +2,20 @@
   "Affine transformations"
   (:use [cljts.geom :only [c]])
   (:import [com.vividsolutions.jts.geom.util
-            AffineTransformation AffineTransformationBuilder]
+            AffineTransformation AffineTransformationFactory]
            [com.vividsolutions.jts.geom Coordinate Geometry]))
 
-(defn- create-builder [c1 c2 c3 c4 c5 c6]
-  (com.vividsolutions.jts.geom.util.AffineTransformationBuilder. c1 c2 c3 c4 c5 c6))
+(defn- create-from-control-vectors
+  ([c1 c2 c3 c4 c5 c6]
+     (AffineTransformationFactory/createFromControlVectors c1 c2 c3 c4 c5 c6))
+  ([c1 c2 c3 c4]
+     (AffineTransformationFactory/createFromControlVectors c1 c2 c3 c4))
+  ([c1 c2]
+      (AffineTransformationFactory/createFromControlVectors c1 c2)))
 
-(defn- create-transformation [coordinates]
-  (let [builder (apply create-builder (map #(apply c %) (partition 2 coordinates)))]
-    (.getTransformation builder)))
+(defn- create-transformation [xys]
+  (let [coords (map #(apply c %) (partition 2 xys))]
+    (apply create-from-control-vectors coords)))
 
 (defprotocol Transformable
   (transform [this transformation]))

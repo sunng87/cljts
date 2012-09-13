@@ -44,6 +44,19 @@
    (linear (c 0 1)) => (c 5 7)))
 
 (fact
+ (let [translaton 
+       (transformation '(0 0
+                         5 6))]
+   (translaton (c 0 0)) => (c 5 6)))
+
+(fact
+ (let [linear 
+       (transformation '(0 0 1 1
+                         5 5 6 9))]
+   (linear (c 0 0)) => (c 5 5)
+   (linear (c 1 1)) => (c 6 9)))
+
+(fact
  (let [inverse 
        (inverse-transformation '(0 0    1 0    0 1
                                  0 0    2 1    0 2))]
