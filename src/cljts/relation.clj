@@ -1,6 +1,7 @@
 (ns cljts.relation
   (:refer-clojure :exclude [contains?])
-  (:import [com.vividsolutions.jts.geom Geometry]))
+  (:import [com.vividsolutions.jts.geom Geometry])
+  (:import [com.vividsolutions.jts.geom.prep PreparedGeometry]))
 
 (defprotocol GeometryRelations
   (equals? [this that]
@@ -50,4 +51,17 @@ a.Overlaps(b) ⇔ ( dim(I(a)) = dim(I(b)) = dim(I(a) ∩ I(b))) ∧ (a ∩ b ≠
   (relation [this that]
     (.toString (.relate this that))))
 
-
+(extend-type PreparedGeometry
+  GeometryRelations
+  (disjoint? [this that]
+    (.disjoint this that))
+  (intersects? [this that]
+    (.intersects this that))
+  (touches? [this that]
+    (.touches this that))
+  (crosses? [this that]
+    (.crosses this that))
+  (within? [this that]
+    (.within this that))
+  (overlaps? [this that]
+    (.overlaps this that)))

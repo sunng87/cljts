@@ -61,6 +61,18 @@ Test spatial relationship between geometry objects. (Based on DE9-IM)
 
 ```
 
+Test spatial relationship using prepared geometries. Please see
+[this blog post](http://lin-ear-th-inking.blogspot.com/2007/08/preparedgeometry-efficient-batch.html)
+for details on prepared geometries. Please note that prepared geometry
+should be the first argument for a relationship function.
+
+```clojure
+(use 'cljts.prep)
+(def prepared-polygon (prepare (polygon (linear-ring [(c 20 40) (c 20 46) (c 34 56) (c 20 40)]) nil)))
+(contains? prepared-polygon point)
+
+```
+
 Basic spatial analysis functions:
 
 ```clojure
@@ -76,6 +88,23 @@ Serialize geometry objects to Well-Known Text and Well-Known Binary format:
 (write-wkt g)
 (write-wkb-bytes data)
 (read-wkt some-reader)
+```
+
+Affine transformations:
+
+```clojure
+(use 'cljts.transform)
+(def rotate-clockwise
+           (transformation [(c 0 0) (c 1 0) (c 0 1)
+                            (c 0 0) (c 0 1) (c -1 0)]))
+(def rotate-counterclockwise
+           (inverse-transformation [(c 0 0) (c 1 0) (c 0 1)
+                                    (c 0 0) (c 0 1) (c -1 0)]))
+(rotate-clockwise (line-string [(c 0 0) (c 2 2)]))
+;;; user> #<LineString LINESTRING (0 0, -2 2)>
+(rotate-counterclockwise (line-string [(c 0 0) (c 2 2)]))
+;;; user> #<LineString LINESTRING (0 0, 2 -2)>
+
 ```
 
 ## License
