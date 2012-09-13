@@ -107,6 +107,10 @@ Affine transformations:
 
 ```
 
+## Contributors
+
+* [Alexey Pushkin](https://github.com/bapehbe)
+
 ## License
 
 Copyright (C) 2012 Sun Ning
