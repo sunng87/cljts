@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/sunng87/cljts.png)](http://travis-ci.org/sunng87/cljts)
+
 # cljts
 
 A clojure library wraps JTS, implements Simple Feature
