@@ -44,6 +44,8 @@ a.Overlaps(b) ⇔ ( dim(I(a)) = dim(I(b)) = dim(I(a) ∩ I(b))) ∧ (a ∩ b ≠
     (.crosses this that))
   (within? [this that]
     (.within this that))
+  (contains? [this that]
+    (.contains this that))
   (overlaps? [this that]
     (.overlaps this that))
   (relate? [this that de9-im]
@@ -63,5 +65,7 @@ a.Overlaps(b) ⇔ ( dim(I(a)) = dim(I(b)) = dim(I(a) ∩ I(b))) ∧ (a ∩ b ≠
     (.crosses this that))
   (within? [this that]
     (.within this that))
+  (contains? [this that]
+    (.contains this that))
   (overlaps? [this that]
     (.overlaps this that)))
