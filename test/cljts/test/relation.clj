@@ -22,6 +22,10 @@
    (crosses? l pp) => false
    (within? p pp2) => true
    (within? p pp) => false
+   (covers? pp2 p) => true
+   (covers? pp p) => false
+   (contains? pp2 p) => true
+   (contains? pp p) => false
    (overlaps? pp pp2) => true
    (relate? p pp "F**T*****") => false
    (relation pp pp2) => (.toString (.relate pp pp2))))
@@ -45,6 +49,10 @@
    (crosses? prep-l pp) => false
    (within? prep-p pp2) => true
    (within? prep-p pp) => false
+   (covers? prep-pp2 p) => true
+   (covers? prep-pp p) => false
+   (contains? prep-pp2 p) => true
+   (contains? prep-pp p) => false
    (overlaps? prep-pp pp2) => true))
 
 

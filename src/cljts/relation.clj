@@ -20,6 +20,8 @@ a.Touch(b) ⇔ (I(a)∩I(b)=∅)∧(a∩b)≠∅")
 a.Cross(b) ⇔ [I(a)∩I(b)≠∅ ∧ (a ∩ b ≠a) ∧ (a ∩ b ≠b)]")
   (within? [this that]
     "The Within relationship is defined as: a.Within(b) ⇔ (a∩b=a) ∧ (I(a)∩E(b)=∅)")
+  (covers? [this that]
+    "The Covers relationship is defined as: a.Covers(b) ⇔ (a∩b=b)")
   (contains? [this that]
     "a.Contains(b) ⇔ b.Within(a)")
   (overlaps? [this that]
@@ -44,6 +46,8 @@ a.Overlaps(b) ⇔ ( dim(I(a)) = dim(I(b)) = dim(I(a) ∩ I(b))) ∧ (a ∩ b ≠
     (.crosses this that))
   (within? [this that]
     (.within this that))
+  (covers? [this that]
+    (.covers this that))
   (contains? [this that]
     (.contains this that))
   (overlaps? [this that]
@@ -65,6 +69,8 @@ a.Overlaps(b) ⇔ ( dim(I(a)) = dim(I(b)) = dim(I(a) ∩ I(b))) ∧ (a ∩ b ≠
     (.crosses this that))
   (within? [this that]
     (.within this that))
+  (covers? [this that]
+    (.covers this that))
   (contains? [this that]
     (.contains this that))
   (overlaps? [this that]
