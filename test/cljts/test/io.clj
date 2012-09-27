@@ -47,3 +47,21 @@
    (WKBWriter/toHex (.toByteArray bos)) =>
    "0000000002000000024049000000000000403400000000000040440000000000004008000000000000"))
 
+(fact
+  (write-geojson-str (line-string [(c 50 20) (c 40 3)]))
+  => "{\"type\": \"LineString\", \"coordinates\": [[50 20], [40 3]]}")
+
+(fact
+  (read-geojson-str "{\"type\": \"LineString\", \"coordinates\": [[50 20], [40 3]]}")
+  => (line-string [(c 50 20) (c 40 3)]))
+
+(fact
+  (let [sw (StringWriter.)
+        geo (line-string [(c 50 20) (c 40 3)])]
+    (write-geojson geo sw)
+    (.toString sw) => "{\"type\": \"LineString\", \"coordinates\": [[50 20], [40 3]]}"))
+
+(fact
+  (let [sr (StringReader. "{\"type\": \"LineString\", \"coordinates\": [[50 20], [40 3]]}")
+        geo (read-geojson sr)]
+    geo => (line-string [(c 50 20) (c 40 3)])))
