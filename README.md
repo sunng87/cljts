@@ -17,7 +17,7 @@ includes:
 
 ### Leiningen 
 
-    [cljts "0.1.0"]
+    [cljts "0.2.0"]
 
 ### API
 
