@@ -7,11 +7,23 @@
 
 (defn- create-from-control-vectors
   ([c1 c2 c3 c4 c5 c6]
-     (AffineTransformationFactory/createFromControlVectors c1 c2 c3 c4 c5 c6))
+     (AffineTransformationFactory/createFromControlVectors
+      ^Coordinate c1
+      ^Coordinate c2
+      ^Coordinate c3
+      ^Coordinate c4
+      ^Coordinate c5
+      ^Coordinate c6))
   ([c1 c2 c3 c4]
-     (AffineTransformationFactory/createFromControlVectors c1 c2 c3 c4))
+     (AffineTransformationFactory/createFromControlVectors
+      ^Coordinate c1
+      ^Coordinate c2
+      ^Coordinate c3
+      ^Coordinate c4))
   ([c1 c2]
-      (AffineTransformationFactory/createFromControlVectors c1 c2)))
+     (AffineTransformationFactory/createFromControlVectors
+      ^Coordinate c1
+      ^Coordinate c2)))
 
 (defn- create-transformation [coordinates]
   (apply create-from-control-vectors coordinates))
@@ -22,12 +34,12 @@
 (extend-type Coordinate
   Transformable
   (transform [this transformation]
-    (.transform transformation this (Coordinate.))))
+    (.transform ^AffineTransformation transformation this (Coordinate.))))
 
 (extend-type Geometry
   Transformable
   (transform [this transformation]
-    (.transform transformation this)))
+    (.transform ^AffineTransformation transformation this)))
 
 (defn- transformation-fn [tr]
   (fn [this]
@@ -40,7 +52,8 @@
 
 (defn inverse-transformation [coordinates]
   "Creates a transformation function which provides inverse transformation. Please note that not all transformations are inversible, it will throw an exception if no inverse exists"
-  (transformation-fn (.getInverse (create-transformation coordinates))))
+  (transformation-fn
+   (.getInverse ^AffineTransformation (create-transformation coordinates))))
 
 (defn identity-transformation [this]
   "Identity transformation"
