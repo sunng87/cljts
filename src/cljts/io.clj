@@ -10,11 +10,7 @@
             WKBReader
             WKBWriter
             WKTReader
-            WKTWriter
-            ])
-  (:import [org.geotools.geojson.geom
-            GeometryJSON])
-  )
+            WKTWriter]))
 
 (defn read-wkt
   "read geometry object from a reader contains well-known text"
@@ -93,18 +89,3 @@
              ByteOrderValues/LITTLE_ENDIAN)
         wkb-writer (WKBWriter. dimension bo include-srid?)]
     (.write wkb-writer geo)))
-
-(defn read-geojson
-  "read geometry object from a reader that contains a geojson text"
-  [input & {:keys [decimals]}]
-  (let [reader (GeometryJSON.)]
-    (.read reader input)))
-
-(defn write-geojson
-  "write geometry as geojson to output"
-  ([geo]
-    (let [writer (GeometryJSON.)]
-      (.toString writer geo)))
-  ([geo output]
-    (let [writer (GeometryJSON.)]
-      (.write writer geo output))))
