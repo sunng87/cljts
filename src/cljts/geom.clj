@@ -12,8 +12,8 @@
 
 (defn c
   "create a coordinate object."
-  ([x y] (Coordinate. x y))
-  ([x y z] (Coordinate. x y z)))
+  ([x y] (Coordinate. (double x) (double y)))
+  ([x y z] (Coordinate. (double x) (double y) (double z))))
 
 (def ^{:private true} precisions
   {:floating PrecisionModel/FLOATING
@@ -33,8 +33,8 @@
 
 (defmacro defgeom [geom-type doc args bodyfn]
   `(defn ~geom-type ~doc [~@args & {:keys [precision-model# srid#]
-                        :or {precision-model# :floating
-                             srid# 0}}]
+                                    :or {precision-model# :floating
+                                         srid# 0}}]
      (let [geom-factory# (cached-geom-factory precision-model# srid#)]
        (~bodyfn geom-factory# ~@args))))
 
@@ -67,7 +67,7 @@
   (fn [factory ring rings]
     (.createPolygon ^GeometryFactory factory
                     ^LinearRing ring
-                   (into-array LinearRing rings))))
+                    (into-array LinearRing rings))))
 
 (defgeom multi-point
   "create a multi-point with some points"
@@ -128,4 +128,3 @@
     (.isEmpty this))
   (simple? [this]
     (.isSimple this)))
-
