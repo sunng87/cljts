@@ -112,6 +112,7 @@ Affine transformations:
 ## Contributors
 
 * [Alexey Pushkin](https://github.com/bapehbe)
+* [Bartosz Radaczyński](https://github.com/radaczynski)
 
 ## License
 
